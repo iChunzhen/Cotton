@@ -1,2 +1,4 @@
+include ':architecture'
+include ':ui'
 include ':app'
 rootProject.name = "Cotton"
