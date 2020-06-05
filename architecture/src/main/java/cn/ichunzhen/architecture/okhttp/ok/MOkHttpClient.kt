@@ -1,7 +1,5 @@
 package cn.ichunzhen.architecture.okhttp.ok
 
-import okhttp3.Dispatcher
-
 
 /**
  * @Author yuancz
@@ -9,12 +7,23 @@ import okhttp3.Dispatcher
  * @Email ichunzhen6@gmail.com
  */
 class MOkHttpClient constructor(builder: Builder) {
-    val dispatcher: MDispatcher = builder.mDispatcher
-    var isCanceled: Boolean = false
+
+
+    private val dispatcher: MDispatcher = builder.mDispatcher
+    private var isCanceled: Boolean = false
+    private var recount: Int = 0
 
     class Builder() {
-        var mDispatcher: MDispatcher = MDispatcher()
-        var isCanceled: Boolean = false
+        internal var mDispatcher: MDispatcher = MDispatcher()
+        internal var isCanceled: Boolean = false
+        internal var recount: Int = 0
+
+        internal constructor(okHttpClient: MOkHttpClient) : this() {
+            this.mDispatcher = okHttpClient.dispatcher
+            this.isCanceled = okHttpClient.isCanceled
+            this.recount = okHttpClient.recount
+        }
+
         fun build(): MOkHttpClient {
             return MOkHttpClient(this)
         }
@@ -27,5 +36,16 @@ class MOkHttpClient constructor(builder: Builder) {
         fun canceled() = apply {
             this.isCanceled = true
         }
+
+        fun setRetryCount(count: Int) = apply {
+            this.recount = count
+        }
+
+    }
+
+    fun isCanceled(): Boolean = isCanceled
+    fun newCall(mRequest: MRequest): MCall = MRealCall(this, mRequest)
+    fun dispatcher(): MDispatcher {
+        return dispatcher
     }
 }
