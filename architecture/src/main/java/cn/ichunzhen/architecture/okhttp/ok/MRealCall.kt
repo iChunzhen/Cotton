@@ -1,5 +1,6 @@
 package cn.ichunzhen.architecture.okhttp.ok
 
+import cn.ichunzhen.architecture.okhttp.ok.interceptor.*
 import java.io.IOException
 
 /**
@@ -30,7 +31,7 @@ class MRealCall(
         return executed
     }
 
-    override fun enqueue(responseCallback: MCallback?) {
+    override fun enqueue(responseCallback: MCallback) {
         // 不能被重复的执行 enqueue
         synchronized(this) {
             if (executed) {
@@ -74,14 +75,19 @@ class MRealCall(
                 mOkHttpClient.dispatcher().finished(this)
             }
         }
+
         /**
          * 责任链模式设计的拦截器
          * @return
          * @throws IOException
          */
         private fun getResponseWithInterceptorChain(): MResponse {
-            val interceptorList: List<MInterceptor> = ArrayList()
-            interceptorList
+            var interceptorList = ArrayList<MInterceptor>()
+            interceptorList.add(ReRequestInterceptor())
+            interceptorList.add(RequestHeaderInterceptor())
+            interceptorList.add(ConnectionServerInterceptor())
+            var chainManager = ChainManager(interceptorList, 0, mRequest, this@MRealCall)
+            return chainManager.getMResponse(mRequest)
         }
 
     }

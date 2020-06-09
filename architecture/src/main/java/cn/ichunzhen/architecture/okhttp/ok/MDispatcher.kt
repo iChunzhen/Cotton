@@ -3,16 +3,18 @@ package cn.ichunzhen.architecture.okhttp.ok
 import java.util.*
 import java.util.concurrent.*
 import kotlin.collections.ArrayDeque
-
+import kotlin.collections.ArrayList
 
 class MDispatcher {
     internal val maxRequests = 64 // 同时访问任务，最大限制64个
 
     internal val maxRequestsPerHost = 5 // 同时访问同一个服务器域名，最大限制5个
 
-    internal val runningAsyncCalls: Deque<MRealCall.MAsyncCall> = ArrayDeque() // 存储运行的队列
+    //ArrayDeque 用ArrayList 代替 低版本kotlin不支持ArrayDeque
+    internal val runningAsyncCalls = ArrayList<MRealCall.MAsyncCall>() // 存储运行的队列
 
-    internal val readyAsyncCalls: Deque<MRealCall.MAsyncCall> = ArrayDeque() // 存储等待的队列
+    //ArrayDeque 用ArrayList 代替 低版本kotlin不支持ArrayDeque
+    internal val readyAsyncCalls = ArrayList<MRealCall.MAsyncCall>() // 存储等待的队列
 
     fun enqueue(call: MRealCall.MAsyncCall) {
         // 同时运行的队列数 必须小于 配置的64   && 同时访问同一个服务器域名 不能超过5个
@@ -31,12 +33,10 @@ class MDispatcher {
     private fun executorService(): ExecutorService {
         return ThreadPoolExecutor(0, Int.MAX_VALUE, 60L, TimeUnit.SECONDS,
             SynchronousQueue<Runnable>(),
-            object : ThreadFactory {
-                override fun newThread(r: Runnable?): Thread {
-                    var thread = Thread(r, "自己创建线程")
-                    thread.isDaemon = false
-                    return thread
-                }
+            ThreadFactory { r ->
+                var thread = Thread(r, "自己创建线程")
+                thread.isDaemon = false
+                thread
             })
 
     }

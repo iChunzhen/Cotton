@@ -11,7 +11,7 @@ class MOkHttpClient constructor(builder: Builder) {
 
     private val dispatcher: MDispatcher = builder.mDispatcher
     private var isCanceled: Boolean = false
-    private var recount: Int = 0
+    var recount: Int = 3
 
     class Builder() {
         internal var mDispatcher: MDispatcher = MDispatcher()

@@ -6,5 +6,5 @@ package cn.ichunzhen.architecture.okhttp.ok
  * @Email ichunzhen6@gmail.com
  */
 interface MCall {
-    fun enqueue(responseCallback: MCallback?)
+    fun enqueue(responseCallback: MCallback)
 }

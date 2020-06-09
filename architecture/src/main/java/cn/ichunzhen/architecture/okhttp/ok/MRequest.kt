@@ -9,19 +9,18 @@ val GET = "GET"
 val POST = "POST"
 
 class MRequest {
-    fun getUrl(): String = url
-
     internal constructor(builder: Builder) {
         url = builder.url
         requestMethod = builder.requestMethod
-        mHeaderList
+        requestBody = builder.requestBody
+        mHeaderList = builder.mHeaderList
     }
 
-    private var url: String = ""
-    private var requestMethod = GET // 默认请求下是GET
+    var url: String = ""
+    var requestMethod = GET // 默认请求下是GET
 
-    private var mHeaderList: Map<String, String> = HashMap() // 请求头 之请求集合
-
+    var mHeaderList: Map<String, String> = HashMap() // 请求头 之请求集合
+    var requestBody: MRequestBody? = null
 
     class Builder {
         internal var url: String = ""
