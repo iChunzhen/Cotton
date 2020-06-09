@@ -1,6 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
+    <array name="splash_circle_colors">
+        <item>@color/blue</item>
+        <item>@color/green</item>
+        <item>@color/pink</item>
+        <item>@color/orange</item>
+        <item>@color/aqua</item>
+        <item>@color/yellow</item>
+    </array>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="splash_bg">#F8F6EC</color>
+    <color name="orange">#FF9600</color>
+    <color name="aqua">#02D1AC</color>
+    <color name="yellow">#FFD200</color>
+    <color name="blue">#00C6FF</color>
+    <color name="green">#00E099</color>
+
+    <color name="pink">#FF3892</color>
+    <color name="transparent">#00000000</color>
+    <color name="white">#ffffffff</color>
+    <color name="base_shallow_black">#818181</color>
+
+
+    <!--网易云音乐歌单列表-->
+    <color name="colorTransparent">#00000000</color>
+    <color name="colorPageBg">#f2f4f5</color>
+    <color name="colorTheme">#ffce3d3a</color>
+    <color name="colorContent">#ff333333</color>
+    <color name="colorRateRed">#FB5B81</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="tabBackground">#777D7D7D</color>
+
+
+    <color name="font_dark">#595757</color>
+    <color name="form_bg">#f0f0f0</color>
+    <color name="black">#000000</color>
+    <color name="fuck">#46a8ba</color>
+    <color name="vip_button_bg_color">#FEB1B3</color>
+    <color name="vip_button_text_color">#FE6F70</color>
 </resources>
