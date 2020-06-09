@@ -1,3 +1,26 @@
+三五成群
+MOkhttpClient       1.构建者模式生成 2.设置okhttp框架的参数重试次数/拦截器/分发器等/超时时间等框架参数
+
+MRequest            1.构建者模式生成  2.设置请求参数包括地址/请求方式/请求头/请求体等请求参数
+MCall               1.通过mHttpClient.newCall(mRequest)生成 2.内部实现为生成一个MRealCall
+                    mCall.enqueue(mCallback)   实际执行MRealCall.enqueue方法
+MDispatcher         MRealCall.enqueue 中  MDispatcher对mRealCall进行分发处理(加入运行队列执行run方法；加入等待队列等待执行)
+MRealCall  run方法getResponseWithInterceptorChain()通过责任链模式执行并返回response
+           getResponseWithInterceptorChain() 层层MInterceptor拦截器通过ChainManager管理对request处理返回response
+MInterceptor        拦截器demo中用到重试拦截器 请求头处理拦截器 网络连接处理器
+ChainManager        拦截器管理器
+
+var mHttpClient = MOkHttpClient.Builder().build()
+    var mRequest = MRequest.Builder()
+        .url(PATH)
+        .get()
+        .addRequestHeader("123", "zzz")
+        .build()
+    var mCall = mHttpClient.newCall(mRequest)
+
+
+
+
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>【第一个视频的内容】
 1.OSI七层模型，TCP/IP模型(四层)，HTTP格式
   OSI七层参考模型   ---》 TCP/IP参考模型

@@ -1,5 +1,7 @@
 package cn.ichunzhen.architecture.okhttp.ok
 
+import android.view.View
+import okhttp3.*
 import java.io.*
 import java.net.MalformedURLException
 import java.net.Socket
@@ -15,6 +17,8 @@ var PATH =
     "http://restapi.amap.com/v3/weather/weatherInfo?city=110101&key=13cb58f5884f9749287abbead9c658f2"
 
 fun main() {
+    /**okhttp请求*/
+//    okRequest()
     /**自定义okhttp请求*/
 //    mOkRequest()
     /**url操作*/
@@ -43,6 +47,24 @@ fun mOkRequest() {
 
         override fun onResponse(call: MCall, response: MResponse) {
             println(response.toString())
+        }
+    })
+}
+
+fun okRequest() {
+    var url = "https://www.baidu.com"
+    val client = OkHttpClient().newBuilder().build()
+    var request = Request.Builder()
+        .url(url)
+        .build()
+    var call = client.newCall(request)
+    call.enqueue(object : Callback {
+        override fun onFailure(call: Call, e: IOException) {
+            System.out.println("请求失败.. E:${e.toString()}");
+        }
+
+        override fun onResponse(call: Call, response: Response) {
+            System.out.println("请求成功.. response:${response.toString()}");
         }
     })
 }
