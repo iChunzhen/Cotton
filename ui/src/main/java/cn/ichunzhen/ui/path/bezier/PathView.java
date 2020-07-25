@@ -1,11 +1,10 @@
-package cn.ichunzhen.ui.canvas.bezier;
+package cn.ichunzhen.ui.path.bezier;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.RectF;
 import android.view.View;
 
 public class PathView extends View {

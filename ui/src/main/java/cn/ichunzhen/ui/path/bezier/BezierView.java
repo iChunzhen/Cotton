@@ -1,4 +1,4 @@
-package cn.ichunzhen.ui.canvas.bezier;
+package cn.ichunzhen.ui.path.bezier;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -10,7 +10,6 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
