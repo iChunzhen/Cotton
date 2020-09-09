@@ -13,6 +13,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/architecture" />
+            <option value="$PROJECT_DIR$/optimization" />
             <option value="$PROJECT_DIR$/ui" />
           </set>
         </option>

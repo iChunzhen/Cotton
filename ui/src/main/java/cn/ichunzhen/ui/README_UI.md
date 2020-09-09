@@ -1,9 +1,17 @@
 # ui
+
+
+
 ## UI原理与高级绘制
+
 ### UI绘制流程
-#### activity启动流程，源码分析
-#### UI绘制流程（测量， 布局， 绘制）
-### Paint   画笔
+### activity启动流程，源码分析
+### UI绘制流程（测量， 布局， 绘制）
+#### Paint
+    重点
+                  mPaint.setShader(new SweepGradient(200, 200, Color.BLUE, Color.RED)); //设置环形渲染器 着色器 ***！！！
+                  mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DARKEN)); //设置图层混合模式 ***！！！ 18种
+                  mPaint.setColorFilter(new LightingColorFilter(0x00ffff, 0x000000)); //设置颜色过滤器   滤镜    ColorFilter
     Paint mPaint = new Paint(); //初始化
           mPaint.setColor(Color.RED);// 设置颜色
           mPaint.setARGB(255, 255, 255, 0); // 设置 Paint对象颜色,范围为0~255
@@ -20,11 +28,11 @@
             BEVEL   (2);
           mPaint.setStrokeJoin(Paint.Join.MITER);//拐角风格 三个
           
-          mPaint.setShader(new SweepGradient(200, 200, Color.BLUE, Color.RED)); //设置环形渲染器 着色器 ！！！
+          mPaint.setShader(new SweepGradient(200, 200, Color.BLUE, Color.RED)); //设置环形渲染器 着色器 ***！！！
           
-          mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DARKEN)); //设置图层混合模式！！！！
+          mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DARKEN)); //设置图层混合模式 ***！！！
           
-          mPaint.setColorFilter(new LightingColorFilter(0x00ffff, 0x000000)); //设置颜色过滤器!!!!
+          mPaint.setColorFilter(new LightingColorFilter(0x00ffff, 0x000000)); //设置颜色过滤器
           mPaint.setFilterBitmap(true); //设置双线性过滤 有无马赛克效果 是否平滑
           mPaint.setMaskFilter(new BlurMaskFilter(10, BlurMaskFilter.Blur.NORMAL));//设置画笔遮罩滤镜 ,传入度数和样式
           mPaint.setTextScaleX(2);// 设置文本缩放倍数
@@ -37,7 +45,7 @@
           mPaint.getTextBounds(str, 0, str.length(), rect); //测量文本大小，将文本大小信息存放在rect中  rect矩形区域
           mPaint.measureText(str); //获取文本的宽
           mPaint.getFontMetrics(); //获取字体度量对象  各种基准线 用于计算字体高度等数据
-####     mPaint.setShader()设置环形渲染器 着色器  
+#####     mPaint.setShader()设置环形渲染器 着色器  
             定义了平铺的3种模式： 
             static final Shader.TileMode CLAMP: 边缘拉伸.
             
@@ -109,7 +117,7 @@
                                 mPaint.setShader(mShader);
                                 canvas.drawCircle(250, 250, 250, mPaint);
                                 
-####        图层混合模式      PorterDuff.Mode.    18种              
+#####        图层混合模式      PorterDuff.Mode.    18种              
                                 src 原图像
                                 dst 目标图像
                                 //1.ComposeShader
@@ -117,7 +125,7 @@
                                 //3.PorterDuffColorFilter
                                 
                                 先禁止硬件加速，高版本Android系统不支持
-####    mPaint.setColorFilter(new LightingColorFilter(0x00ffff, 0x000000)); //设置颜色过滤器   滤镜    ColorFilter
+#####    mPaint.setColorFilter(new LightingColorFilter(0x00ffff, 0x000000)); //设置颜色过滤器   滤镜    ColorFilter
        
        LightingColorFilter(@ColorInt int mul, @ColorInt int add)
         /**
@@ -135,40 +143,47 @@
                  canvas.drawBitmap(mBitmap, 100, 0, mPaint);
 
 
-### Canvas  画布变换/状态保持/粒子效果（SplitView）/启动页水波纹效果（SplashView）
-         变换     TransformView
-                平移  canvas.translate(50,50);
-                缩放  canvas.scale(0.5f, 0.5f);
-                旋转  canvas.rotate(45);
-                倾斜  canvas.skew(0, 1); //在y方向倾斜45度， X轴顺时针旋转45
-                切割  canvas.clipRect(200, 200,700, 700); //画布被裁剪
-                      canvas.clipOutRect(200,200,700,700); //画布裁剪外的区域
-                矩阵  canvas.setMatrix(matrix);
-        保持  SaveRestoreView
-             canvas.save();  canvas.restore();   canvas.restoreToCount(layerId);
-             1.canvas内部对于状态的保存存放在栈中
-             2.可以多次调用save保存canvas的状态，并且可以通过getSaveCount方法获取保存的状态个数
-             3.可以通过restore方法返回最近一次save前的状态，也可以通过restoreToCount返回指定save状态。指定save状态之后的状态全部被清除
-             4.saveLayer可以创建新的图层，之后的绘制都会在这个图层之上绘制，直到调用restore方法
-             注意：绘制的坐标系不能超过图层的范围， saveLayerAlpha对图层增加了透明度信息
+#### Cavans
+    Cavans变换/状态保持/粒子效果
+        变换
+            canvas.translate(50,50);
+        保持  canvas.save();  canvas.restore();   .restoreToCount(layerId);
+         1.canvas内部对于状态的保存存放在栈中
+         2.可以多次调用save保存canvas的状态，并且可以通过getSaveCount方法获取保存的状态个数
+         3.可以通过restore方法返回最近一次save前的状态，也可以通过restoreToCount返回指定save状态。指定save状态之后的状态全部被清除
+         4.saveLayer可以创建新的图层，之后的绘制都会在这个图层之上绘制，直到调用restore方法
+         注意：绘制的坐标系不能超过图层的范围， saveLayerAlpha对图层增加了透明度信息
 
-        ####贝塞尔曲线及应用    BezierView
+####贝塞尔曲线及应用    BezierView
         二阶  mPath.rQuadTo(300, 100, -90, 400);
         三阶  mPath.cubicTo(400, 200,10, 500,300, 700);
-### path
+#### path
     1.Path path = new Path(); path.lineTo(0,200);
-    2.
     canvas.drawPath(mPath, mPaint);
-## 项目介绍
 
+###  事件传递机制	dispatchevent
+###  属性动画	animator	通过反射设置view的属性产生动画效果
+	ObjectAnimator	 实现VSYNCManager接收刷新信号 提供设置方法设置属性插值器等 开始结束方法
+                     接收vsync信号后通过FloatPropertyValuesHolder修改view属性
+	FloatPropertyValuesHolder	修改view属性的实现类 通过反射获取对应属性 并set属性值
+	MyFloatKeyframe	 关键帧保存数据的实体类
+	MyKeyframeSet	 1提供ofFloat方法	通过插值器和设置的动画属性计算关键帧数据数组	2根据插值器fraction获取关键帧之间哎i俺的某一个具体帧
+	TimeInterpolator 插值器 提供getInterpolation方法计算执行进度fraction
+			
+	
+	ObjectAnimator objectAnimator = ObjectAnimator.
+	ofFloat(button, "scaleX", 2f);
+	objectAnimator.setDuration(3000);
+	objectAnimator.start();
 
 
 屏幕适配
     限定符适配   dimens 增加大小 
     百分比适配  抛弃dp px 用系统的presentLayout  不方便自定义控件
     代码动态适配  UiUtils
-  
-  全面屏适配  
-    
+
+  全面屏适配
+
   toolbar   actionBar升级版
+
 
